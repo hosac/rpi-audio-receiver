@@ -5,32 +5,8 @@ if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 THENAME="DLNA/UPnP renderer (gmrender-resurrect)"
 
 
-install-package() {
-    echo "Installing package "$THENAME"..."
-
-    # Dependencies
-    apt install -y --no-install-recommends gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly 
-    # Use ALSA for sound
-    apt install -y --no-install-recommends gstreamer1.0-alsa
-    # Package
-    apt install -y --no-install-recommends gmediarender
-
-cat <<EOF > /etc/default/gmediarender
-ENABLED=1
-DAEMON_USER="nobody:audio"
-INITIAL_VOLUME_DB=-20
-ALSA_DEVICE="sysdefault"
-EOF
-
-    # Replace static name "Raspberry" with the dynamic hostname variable
-    sed -i -e 's/Raspberry/$(hostname)/g' /etc/init.d/gmediarender
-
-    # Enable and start service
-    systemctl enable gmediarender
-    systemctl start gmediarender
-}
-
 install-source() {
+    echo
     echo "Building "$THENAME" from source code..."
 
     # Install dependencies
@@ -68,17 +44,6 @@ EOF
     systemctl enable --now gmrender-resurrect.service
 }
 
+
 # Choose option
-echo
-echo -n "Do you want to install "$THENAME" with (a)pt or build it from (s)ource code?  [a/s/N] "
-read REPLY
-if [[ "$REPLY" =~ ^(package|a|A)$ ]]; 
-then 
-    install-package
-elif [[ "$REPLY" =~ ^(source|s|S)$ ]]; 
-then 
-    install-source
-else
-    echo "Installation of "$THENAME" aborted."
-    exit 0; 
-fi
+install-source

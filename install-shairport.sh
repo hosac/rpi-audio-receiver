@@ -4,19 +4,9 @@ if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
 THENAME="Shairport Sync AirPlay Audio Receiver"
 
-install-package() {
-    echo "Installing package "$THENAME"..."
-    # Dependencies
-    apt install --no-install-recommends -y avahi-daemon libavahi-client3 libconfig9 libdaemon0 libjack-jackd2-0 libmosquitto1 libpopt0 libpulse0 libsndfile1 libsoxr0
-    # Install
-    dpkg -i files/shairport-sync_3.3.5-1~bpo10+1_armhf.deb
-    # Why is this necessary?
-    usermod -a -G gpio shairport-sync
-    # Why is this necessary?
-    raspi-config nonint do_boot_wait 0
-}
 
 install-source() {
+    echo
     echo "Building "$THENAME" from source code..."
     # Dependencies
     sudo apt-get -y install build-essential git xmltoman autoconf automake libtool libpopt-dev libconfig-dev libasound2-dev avahi-daemon libavahi-client-dev libssl-dev libsoxr-dev
@@ -56,18 +46,5 @@ EOF
 }
 
 # Choose option
-echo
-echo -n "Do you want to install "$THENAME" by (p)ackage or build it from (s)ource code?  [p/s/N] "
-read REPLY
-if [[ "$REPLY" =~ ^(package|p|P)$ ]]; 
-then 
-    install-package
-    do-settings
-elif [[ "$REPLY" =~ ^(source|s|S)$ ]]; 
-then 
-    install-source
-    do-settings
-else
-    echo "Installation of "$THENAME" aborted."
-    exit 0; 
-fi
+install-source
+do-settings

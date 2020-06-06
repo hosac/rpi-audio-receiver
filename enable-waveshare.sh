@@ -2,12 +2,11 @@
 #
 # https://github.com/hosac | hosac@gmx.net
 #
+
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
 echo
-echo -n "Do you want to enable Waveshare WM8960-Audio-HAT and ALSA configuration? [y/N] "
-read REPLY
-if [[ ! "$REPLY" =~ ^(yes|y|Y)$ ]]; then exit 0; fi
+echo "Installing WM8960-Audio-HAT and ALSA configuration"
 
 
 # ### Waveshare Audio-HAT WM8960 setup 
@@ -36,9 +35,6 @@ cd WM8960-Audio-HAT
 ./install.sh 
 # Copy individual sound settings
 cp -rf ../files/wm8960_asound.state /etc/wm8960-soundcard/wm8960_asound.state
-# Reboot
-reboot
-
 
 
 

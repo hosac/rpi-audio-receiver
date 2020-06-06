@@ -3,13 +3,9 @@
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
 echo
-echo -n "Do you want to enable HiFiBerry device tree overlay and ALSA configuration? [y/N] "
-read REPLY
-if [[ ! "$REPLY" =~ ^(yes|y|Y)$ ]]; then exit 0; fi
+echo "Installing HiFiBerry MiniAmp"
+CARD="dac"
 
-echo -n "Which board do you want to enable? [dac/dacplus/dacplusadc/dacplusadcpro/dacplusdsp/digi/digipro/amp] "
-read CARD
-if [[ ! "$CARD" =~ ^(dac|dacplus|digi|amp)$ ]]; then exit 1; fi
 
 cat <<'EOF' > /etc/asound.conf
 defaults.pcm.card 0

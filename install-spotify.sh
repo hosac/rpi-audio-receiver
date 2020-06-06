@@ -5,9 +5,8 @@ ARCH=armhf # Change to armv6 for Raspberry Pi 1/Zero
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
 echo
-echo -n "Do you want to install Spotify Connect (spotifyd)? [y/N] "
-read REPLY
-if [[ ! "$REPLY" =~ ^(yes|y|Y)$ ]]; then exit 0; fi
+echo "Installing Spotify Connect"
+
 
 # Check architecture (armv6 = Pi Zero W | armv7 = Pi 2/3/4)
 ARCH=$( lscpu | awk '/Architecture:/{print $2}' | sed s/.$// )
